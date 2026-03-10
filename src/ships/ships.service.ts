@@ -11,7 +11,43 @@ import { Ship, ShipStatus } from './entities/ship.entity';
 @Injectable()
 export class ShipsService {
   // Simple in-memory database
-  private ships: Ship[] = [];
+  private ships: Ship[] = [
+    {
+      id: '1',
+      name: 'Black Pearl',
+      captain: 'Jack Sparrow',
+      capacity: 1000,
+      status: ShipStatus.SAILING,
+    },
+    {
+      id: '2',
+      name: 'Flying Dutchman',
+      captain: 'Davy Jones',
+      capacity: 2000,
+      status: ShipStatus.MAINTENANCE,
+    },
+    {
+      id: '3',
+      name: "Queen Anne's Revenge",
+      captain: 'Blackbeard',
+      capacity: 1500,
+      status: ShipStatus.LOADING,
+    },
+    {
+      id: '4',
+      name: 'Empress',
+      captain: 'Sao Feng',
+      capacity: 1200,
+      status: ShipStatus.IDLE,
+    },
+    {
+      id: '5',
+      name: 'Silent Mary',
+      captain: 'Armando Salazar',
+      capacity: 2500,
+      status: ShipStatus.SAILING,
+    },
+  ];
 
   create(createShipDto: CreateShipDto): Ship {
     const newShip: Ship = {

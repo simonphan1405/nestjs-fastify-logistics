@@ -6,7 +6,53 @@ import { Shipment, ShipmentStatus } from './entities/shipment.entity';
 
 @Injectable()
 export class ShipmentsService {
-  private shipments: Shipment[] = [];
+  private shipments: Shipment[] = [
+    {
+      id: '1',
+      cargoName: 'Cargo 1',
+      weight: 1000,
+      originPortId: '1',
+      destinationPortId: '2',
+      shipId: '1',
+      status: ShipmentStatus.PENDING,
+    },
+    {
+      id: '2',
+      cargoName: 'Cargo 2',
+      weight: 2000,
+      originPortId: '2',
+      destinationPortId: '3',
+      shipId: '2',
+      status: ShipmentStatus.LOADING,
+    },
+    {
+      id: '3',
+      cargoName: 'Cargo 3',
+      weight: 1500,
+      originPortId: '3',
+      destinationPortId: '1',
+      shipId: '3',
+      status: ShipmentStatus.SAILING,
+    },
+    {
+      id: '4',
+      cargoName: 'Cargo 4',
+      weight: 2500,
+      originPortId: '4',
+      destinationPortId: '1',
+      shipId: '4',
+      status: ShipmentStatus.DELIVERED,
+    },
+    {
+      id: '5',
+      cargoName: 'Cargo 5',
+      weight: 2500,
+      originPortId: '4',
+      destinationPortId: '1',
+      shipId: '4',
+      status: ShipmentStatus.DELIVERED,
+    },
+  ];
 
   create(createShipmentDto: CreateShipmentDto): Shipment {
     const newShipment: Shipment = {

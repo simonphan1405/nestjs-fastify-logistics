@@ -60,3 +60,5 @@ Thumbs.db
 # Prisma (if you add it later)
 *.db
 *.db-journal
+
+/generated/prisma

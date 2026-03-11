@@ -1,0 +1,9 @@
+model Port {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  country   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("ports")
+}

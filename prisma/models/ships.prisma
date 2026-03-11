@@ -1,0 +1,18 @@
+model Ship {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  captain   String
+  capacity  Int
+  status    ShipStatus
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("ships")
+}
+
+enum ShipStatus {
+  IDLE
+  LOADING
+  SAILING
+  MAINTENANCE
+}

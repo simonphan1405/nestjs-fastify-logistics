@@ -1,0 +1,20 @@
+model Shipment {
+  id                 String   @id @default(uuid())
+  cargoName          String
+  weight             Int
+  originPortId       String
+  destinationPortId  String
+  shipId             String?
+  status             ShipmentStatus
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@map("shipments")
+}
+
+enum ShipmentStatus {
+  PENDING
+  LOADING
+  SAILING
+  DELIVERED
+}

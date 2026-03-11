@@ -6,9 +6,10 @@ import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 import { ShipsModule } from './ships/ships.module';
 import { PortsModule } from './ports/ports.module';
 import { ShipmentsModule } from './shipments/shipments.module';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
-  imports: [ShipsModule, PortsModule, ShipmentsModule],
+  imports: [ShipsModule, PortsModule, ShipmentsModule, DatabaseModule],
   controllers: [AppController],
   providers: [
     AppService,

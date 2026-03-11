@@ -1,25 +1,27 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePortDto } from './dto/create-port.dto';
 import { UpdatePortDto } from './dto/update-port.dto';
-import { prisma } from '../../lib/prisma';
+import { DatabaseService } from 'src/database/database.service';
 
 /**
  * PortsService handles operations related to Ports.
  */
 @Injectable()
 export class PortsService {
+  constructor(private readonly databaseService: DatabaseService) {}
+
   async create(createPortDto: CreatePortDto) {
-    return prisma.port.create({
+    return this.databaseService.port.create({
       data: createPortDto,
     });
   }
 
   async findAll() {
-    return prisma.port.findMany();
+    return this.databaseService.port.findMany();
   }
 
   async findOne(id: string) {
-    const port = await prisma.port.findUnique({
+    const port = await this.databaseService.port.findUnique({
       where: { id },
     });
     if (!port) {
@@ -30,7 +32,7 @@ export class PortsService {
 
   async update(id: string, updatePortDto: UpdatePortDto) {
     await this.findOne(id);
-    return prisma.port.update({
+    return this.databaseService.port.update({
       where: { id },
       data: updatePortDto,
     });
@@ -38,7 +40,7 @@ export class PortsService {
 
   async remove(id: string) {
     await this.findOne(id);
-    return prisma.port.delete({
+    return this.databaseService.port.delete({
       where: { id },
     });
   }

@@ -8,12 +8,12 @@ export class PortsController {
   constructor(private readonly portsService: PortsService) {}
 
   @Post()
-  create(@Body() createPortDto: CreatePortDto): Port {
+  create(@Body() createPortDto: CreatePortDto) {
     return this.portsService.create(createPortDto);
   }
 
   @Get()
-  findAll(): Port[] {
+  findAll() {
     return this.portsService.findAll();
   }
 }

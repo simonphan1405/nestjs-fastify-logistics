@@ -6,11 +6,11 @@ export enum ShipmentStatus {
 }
 
 export class Shipment {
-  id: string;
-  cargoName: string;
-  weight: number;
-  originPortId: string;
-  destinationPortId: string;
+  id!: string;
+  cargoName!: string;
+  weight!: number;
+  originPortId!: string;
+  destinationPortId!: string;
   shipId?: string;
-  status: ShipmentStatus;
+  status!: ShipmentStatus;
 }

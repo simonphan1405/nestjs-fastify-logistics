@@ -1,7 +1,7 @@
 import { IsEnum, IsInt, IsNotEmpty, IsString, Min } from 'class-validator';
-import { ShipStatus } from '../entities/ship.entity';
+import { ShipStatus } from 'generated/prisma/client';
 
-import { ShipCreateInput } from '../../../generated/prisma/models/Ship';
+import { ShipCreateInput } from 'generated/prisma/models/Ship';
 
 /**
  * DTO (Data Transfer Object) for creating a Ship.

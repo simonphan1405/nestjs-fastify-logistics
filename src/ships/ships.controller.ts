@@ -1,8 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ShipsService } from './ships.service';
 import { CreateShipDto } from './dto/create-ship.dto';
 import { UpdateShipDto } from './dto/update-ship.dto';
-import { Ship } from './entities/ship.entity';
 
 /**
  * ShipsController routes HTTP requests to the ShipsService.
@@ -13,27 +12,32 @@ export class ShipsController {
   constructor(private readonly shipsService: ShipsService) {}
 
   @Post()
-  create(@Body() createShipDto: CreateShipDto): Ship {
+  create(@Body() createShipDto: CreateShipDto) {
     return this.shipsService.create(createShipDto);
   }
 
   @Get()
-  findAll(): Ship[] {
+  findAll() {
     return this.shipsService.findAll();
   }
 
   @Get('sailing')
-  findSailing(): Ship[] {
+  findSailing() {
     return this.shipsService.findSailing();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Ship {
+  findOne(@Param('id') id: string) {
     return this.shipsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateShipDto: UpdateShipDto): Ship {
+  update(@Param('id') id: string, @Body() updateShipDto: UpdateShipDto) {
     return this.shipsService.update(id, updateShipDto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.shipsService.remove(id);
   }
 }

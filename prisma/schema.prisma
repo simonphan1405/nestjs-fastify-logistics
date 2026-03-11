@@ -55,7 +55,7 @@ model Shipment {
   weight             Int
   originPortId       String
   destinationPortId  String
-  shipId             String
+  shipId             String?
   status             ShipmentStatus
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt

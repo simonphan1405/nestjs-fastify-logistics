@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsNumber, IsString, Min } from 'class-validator';
-import { ShipmentCreateInput } from '../../../generated/prisma/models/Shipment';
+import { ShipmentCreateInput } from 'generated/prisma/models/Shipment';
 
-export class CreateShipmentDto implements Pick<ShipmentCreateInput, 'cargoName' | 'weight' | 'originPortId' | 'destinationPortId'> {
+export class CreateShipmentDto implements Pick<ShipmentCreateInput, 'cargoName' | 'weight'> {
   @IsString()
   @IsNotEmpty()
   cargoName!: string;

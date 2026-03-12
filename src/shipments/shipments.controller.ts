@@ -6,29 +6,36 @@ import {
   Param,
   Patch,
   Delete,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
-import { ShipmentsService } from './shipments.service';
 import { CreateShipmentDto } from './dto/create-shipment.dto';
 import { AssignShipmentDto } from './dto/assign-shipment.dto';
 import { UpdateShipmentStatusDto } from './dto/update-shipment-status.dto';
-import { UpdateShipmentDto } from './dto/update-shipment.dto';
+import { ShipmentStatus } from './domain/entities/shipment.entity';
 import { CreateShipmentUseCase } from './application/use-cases/create-shipment.use-case';
+import { GetAllShipmentsUseCase } from './application/use-cases/get-all-shipments.use-case';
+import { GetShipmentByIdUseCase } from './application/use-cases/get-shipment-by-id.use-case';
+import { GetShipmentsByShipUseCase } from './application/use-cases/get-shipments-by-ship.use-case';
+import { AssignShipmentUseCase } from './application/use-cases/assign-shipment.use-case';
+import { UpdateShipmentStatusUseCase } from './application/use-cases/update-shipment-status.use-case';
+import { DeleteShipmentUseCase } from './application/use-cases/delete-shipment.use-case';
 
 @Controller('shipments')
 export class ShipmentsController {
   constructor(
-    private readonly shipmentsService: ShipmentsService,
     private readonly createShipmentUseCase: CreateShipmentUseCase,
+    private readonly getAllShipmentsUseCase: GetAllShipmentsUseCase,
+    private readonly getShipmentByIdUseCase: GetShipmentByIdUseCase,
+    private readonly getShipmentsByShipUseCase: GetShipmentsByShipUseCase,
+    private readonly assignShipmentUseCase: AssignShipmentUseCase,
+    private readonly updateShipmentStatusUseCase: UpdateShipmentStatusUseCase,
+    private readonly deleteShipmentUseCase: DeleteShipmentUseCase,
   ) {}
-
-  // @Post()
-  // create(@Body() createShipmentDto: CreateShipmentDto) {
-  //   return this.shipmentsService.create(createShipmentDto);
-  // }
 
   @Post()
   async create(@Body() createShipmentDto: CreateShipmentDto) {
-    return await this.createShipmentUseCase.execute(
+    return this.createShipmentUseCase.execute(
       createShipmentDto.cargoName,
       createShipmentDto.weight,
       createShipmentDto.originPortId,
@@ -38,27 +45,17 @@ export class ShipmentsController {
 
   @Get()
   findAll() {
-    return this.shipmentsService.findAll();
+    return this.getAllShipmentsUseCase.execute();
+  }
+
+  @Get('ship/:shipId')
+  getShipmentsOfShip(@Param('shipId') shipId: string) {
+    return this.getShipmentsByShipUseCase.execute(shipId);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.shipmentsService.findOne(id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateShipmentDto: UpdateShipmentDto,
-  ) {
-    // This calls a generic update, but to implement the custom methods instead:
-    // UpdateShipmentDto could be added to service, but we have specific methods below
-    throw new Error('Please use specific endpoints for assignment and status');
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.shipmentsService.remove(id);
+    return this.getShipmentByIdUseCase.execute(id);
   }
 
   @Patch(':id/assign')
@@ -66,12 +63,7 @@ export class ShipmentsController {
     @Param('id') id: string,
     @Body() assignShipmentDto: AssignShipmentDto,
   ) {
-    return this.shipmentsService.assignToShip(id, assignShipmentDto);
-  }
-
-  @Get('ship/:shipId')
-  getShipmentsOfShip(@Param('shipId') shipId: string) {
-    return this.shipmentsService.getShipmentsOfShip(shipId);
+    return this.assignShipmentUseCase.execute(id, assignShipmentDto.shipId);
   }
 
   @Patch(':id/status')
@@ -79,6 +71,16 @@ export class ShipmentsController {
     @Param('id') id: string,
     @Body() updateShipmentStatusDto: UpdateShipmentStatusDto,
   ) {
-    return this.shipmentsService.updateStatus(id, updateShipmentStatusDto);
+    return this.updateShipmentStatusUseCase.execute(
+      id,
+      updateShipmentStatusDto.status as unknown as ShipmentStatus,
+    );
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async remove(@Param('id') id: string) {
+    await this.deleteShipmentUseCase.execute(id);
   }
 }
+

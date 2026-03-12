@@ -1,17 +1,39 @@
-import { Controller, Get, Post, Body, Param, Patch, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Patch,
+  Delete,
+} from '@nestjs/common';
 import { ShipmentsService } from './shipments.service';
 import { CreateShipmentDto } from './dto/create-shipment.dto';
 import { AssignShipmentDto } from './dto/assign-shipment.dto';
 import { UpdateShipmentStatusDto } from './dto/update-shipment-status.dto';
 import { UpdateShipmentDto } from './dto/update-shipment.dto';
+import { CreateShipmentUseCase } from './application/use-cases/create-shipment.use-case';
 
 @Controller('shipments')
 export class ShipmentsController {
-  constructor(private readonly shipmentsService: ShipmentsService) {}
+  constructor(
+    private readonly shipmentsService: ShipmentsService,
+    private readonly createShipmentUseCase: CreateShipmentUseCase,
+  ) {}
+
+  // @Post()
+  // create(@Body() createShipmentDto: CreateShipmentDto) {
+  //   return this.shipmentsService.create(createShipmentDto);
+  // }
 
   @Post()
-  create(@Body() createShipmentDto: CreateShipmentDto) {
-    return this.shipmentsService.create(createShipmentDto);
+  async create(@Body() createShipmentDto: CreateShipmentDto) {
+    return await this.createShipmentUseCase.execute(
+      createShipmentDto.cargoName,
+      createShipmentDto.weight,
+      createShipmentDto.originPortId,
+      createShipmentDto.destinationPortId,
+    );
   }
 
   @Get()
@@ -25,7 +47,10 @@ export class ShipmentsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateShipmentDto: UpdateShipmentDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateShipmentDto: UpdateShipmentDto,
+  ) {
     // This calls a generic update, but to implement the custom methods instead:
     // UpdateShipmentDto could be added to service, but we have specific methods below
     throw new Error('Please use specific endpoints for assignment and status');
